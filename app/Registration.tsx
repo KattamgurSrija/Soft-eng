@@ -1,6 +1,7 @@
 import { router, useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+
 import {
   Text,
   View,
@@ -16,15 +17,17 @@ import { styles } from './styles/RegistrationUI';
 const PlaceholderImage = require('@/assets/images/food1.jpg');
 
 export default function Register() {
-    const [fullName, setFullName] = useState('');
-    const [mNumber, setMNumber] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigation = useNavigation();
-  
+
+
     const togglePasswordVisibility = (field: 'password' | 'confirm') => {
         if (field === 'password') {
           setShowPassword(!showPassword);
@@ -36,38 +39,56 @@ export default function Register() {
       
 
   const handleRegister = () => {
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+    if (!username.trim() || !firstName.trim() || !lastName.trim()|| !email.trim() || !password.trim() || !confirmPassword.trim()) 
+      {
+        window.alert('Required Fields');
       return;
+      }
+      if (password !== confirmPassword) 
+        {
+           window.alert('Passwords do not match.');
+           return;
+           
     }
 
-    {/* 
-    fetch('http://138.197.75.233:8080/register/', {
+    const role = "STUDENT";
+
+    fetch('http://127.0.0.1:8081/register/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ 
-        fullName,
-        mNumber,
-        email,
-        password 
+        username: username,
+        first_name: firstName,
+        last_name: lastName,
+        role: role,
+        email: email,
+        password: password,
+          
       }),
     })
-    .then(response => response.ok ? response.json() : Promise.reject(response))
-    .then(data => {
-      Alert.alert('Registration Successful', 'You can now login');
-      navigation.navigate('login' as never);
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        return response.json().then(data => Promise.reject(data));
+      }
     })
-    .catch(error => {
-      Alert.alert('Registration Failed', 'Please check your information');
-      console.error('Registration error:', error);
+    .then(data => {
+      window.alert( `Welcome ${data.first_name}, you are now registered.`);
+      navigation.navigate('Login' as never); 
+      setUsername('');
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
+    })
+    .catch((error) => {
+      Alert.alert('Registration Failed', error.detail || 'There was an issue registering your account.');
     });
-    */}
-
-    console.info("Registration submitted");
-    navigation.navigate('login' as never);
-  };
+  }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -102,13 +123,24 @@ export default function Register() {
             </Text>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>Full Name</Text>
+              <Text style={styles.inputLabel}>First Name</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your full name"
+                placeholder="Enter your first name"
                 placeholderTextColor="#999"
-                value={fullName}
-                onChangeText={setFullName}
+                value={firstName}
+                onChangeText={setFirstName}
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>Last Name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your last name"
+                placeholderTextColor="#999"
+                value={lastName}
+                onChangeText={setLastName}
               />
             </View>
 
@@ -116,10 +148,10 @@ export default function Register() {
               <Text style={styles.inputLabel}>M Number</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your M number with M (M00...)"
+                placeholder="Enter your M number including M (M12...)"
                 placeholderTextColor="#999"
-                value={mNumber}
-                onChangeText={setMNumber}
+                value={username}
+                onChangeText={setUsername}
                 autoCapitalize="none"
               />
             </View>

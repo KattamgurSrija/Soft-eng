@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     },
     
     loginContainer: {
-     flexWrap:'wrap',
+      flexWrap:'wrap',
       marginTop: 40,  
       margin: 50,
       marginHorizontal: 500,
@@ -114,6 +114,7 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
         fontSize: 16,
+        
         
       },
 

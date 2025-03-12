@@ -3,12 +3,12 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   backgroundImage: {
     width: '100%',
-    height: 1000
+    height: '100%'
   },
   background: {
     backgroundColor: 'rgba(14, 1, 1, 0.5)',
       borderRadius: 30,
-      height: 1000
+      height: '100%'
   },
   
   navbar: {

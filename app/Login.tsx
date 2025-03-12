@@ -1,4 +1,6 @@
 import { router, useNavigation } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import React, { useState } from 'react';
 import {
   Text,
@@ -29,35 +31,100 @@ export default function Login() {
     setShowPassword(!showPassword);
   };
 
-  const handleLogin = () => {
-    {/*fetch('http://138.197.75.233:8080/login/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.ok ? response.json() : Promise.reject(response))
-    .then(data => {
-      navigation.navigate('' as never); 
-      
+  const handleLoginuser = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8081/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Login failed');
+      }
+
+      const data = await response.json();
+
+      if (!data.role) {
+        throw new Error('Server response missing role information');
+      }
+
+      await AsyncStorage.setItem('authToken', data.access_token);
+      await AsyncStorage.setItem('userRole', data.role);
+
+      if (data.role == 'STUDENT')
+      {
+        navigation.navigate('about' as never);
+
+      }
+      else
+      {
+        window.alert("Please check username or password")
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      window.alert('Login Failed');
+    } finally {
       setUsername('');
       setPassword('');
-    })
-    .catch(error => {
-      Alert.alert('Login Failed', 'Check your credentials or try again later');
-      console.error('Login error:', error);
-    });
-
-    */}
-    navigation.navigate('chickfilA' as never);
-
-    console.info("You have been logged in")
-
-
+    }
   };
 
-  const handleTabChange = (tab) => {
+
+
+  
+  const handleLoginemployee = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:8081/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Login failed');
+      }
+
+      const data = await response.json();
+
+      if (!data.role) {
+        throw new Error('Server response missing role information');
+      }
+
+      await AsyncStorage.setItem('authToken', data.access_token);
+      await AsyncStorage.setItem('userRole', data.role);
+
+      if (data.role == 'EMPLOYEE')
+      {
+        navigation.navigate('chickfilA' as never);
+
+      }
+      else
+      {
+        window.alert("Please check username or password")
+      }
+
+    } catch (error) {
+      console.error('Login error:', error);
+      window.alert('Login Failed');
+    } finally {
+      setUsername('');
+      setPassword('');
+    }
+     
+    };
+
+    
+  const handleTabChange = (tab: string) => {
     setActiveTab(tab); 
     setUsername(''); 
     setPassword(''); 
@@ -151,7 +218,7 @@ export default function Login() {
            
            </View>
            </View>
-           <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
+           <TouchableOpacity onPress={handleLoginuser} style={styles.loginButton}>
             <Text style={styles.loginButtonText}>Sign In</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Registration' as never)} style={styles.linkText} >
@@ -208,7 +275,7 @@ export default function Login() {
                 </View>
                 </View>
 
-                <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
+                <TouchableOpacity onPress={handleLoginemployee} style={styles.loginButton}>
             <Text style={styles.loginButtonText}>Sign In</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('Login' as never)} style={styles.linkText} >

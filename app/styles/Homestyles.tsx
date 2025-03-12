@@ -18,7 +18,8 @@ export const styles = StyleSheet.create({
       paddingBottom: 30,
       marginLeft: 450,
       marginRight: 450,
-      marginBottom: 190
+      marginBottom: 190,
+      flexWrap: 'wrap'
    
     },
       
@@ -33,6 +34,7 @@ export const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      flexWrap: 'wrap'
     },
     navbarTitle: {
       width: 100,
