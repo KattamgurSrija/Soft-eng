@@ -180,5 +180,92 @@ export const styles = StyleSheet.create({
     color: '#c41200',
     lineHeight: 24,
   },
+  
 
+});
+
+export const mealStyles = StyleSheet.create({
+
+  mealCard: {
+    width: 200,                
+    height: 320,              
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    marginRight: 73,   
+    alignItems: 'center',
+    padding: 10,
+    position: 'relative',
+    marginTop: 50,
+    justifyContent: 'space-evenly',
+  },
+
+  /** Title text at top (e.g. "Entree", "Sides", etc.) */
+  mealCardTitle: {
+    fontWeight: 'bold',
+    fontSize: 19,
+    marginBottom: 40,
+    textAlign: 'center'
+  },
+
+  /** Red plus button in top-right corner */
+  plusButton: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 36,
+    height: 36,
+    borderRadius: 20,
+    backgroundColor: '#d81c1c',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  /** The image for each selected item */
+  mealImage: {
+    width: 170,
+    height: 145,
+    marginVertical: 15,  // space around the image
+    resizeMode: 'cover'
+  },
+
+  /** The name of the selected item */
+  mealItemName: {
+    marginTop: 8,
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#333'
+  },
+
+  /** The "Add Meal to Cart" button (if you have it) */
+  addMealButton: {
+    backgroundColor: '#28a745',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    marginTop: '12%',
+    alignSelf: 'center'
+  }
+});
+
+
+export const modalStyles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  modalContainer: {
+    width: "30%",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 16
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 6,
+    marginBottom: 12,
+    padding: 8
+  }
 });

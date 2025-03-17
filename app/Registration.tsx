@@ -1,7 +1,6 @@
-import { router, useNavigation } from 'expo-router';
-import React, { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-
+import { router, useNavigation } from "expo-router";
+import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   Text,
   View,
@@ -9,102 +8,120 @@ import {
   ScrollView,
   ImageBackground,
   TextInput,
-  Alert
-} from 'react-native';
-import { Image } from 'expo-image';
-import { styles } from './styles/RegistrationUI';
+  Alert,
+} from "react-native";
+import { Image } from "expo-image";
+import { styles } from "./styles/RegistrationUI";
+import LottieView from "lottie-react-native";
+import { Modal, StyleSheet } from "react-native";
 
-const PlaceholderImage = require('@/assets/images/food1.jpg');
+const PlaceholderImage = require("@/assets/images/food1.jpg");
 
 export default function Register() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const navigation = useNavigation();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
+  const navigation = useNavigation();
 
-    const togglePasswordVisibility = (field: 'password' | 'confirm') => {
-        if (field === 'password') {
-          setShowPassword(!showPassword);
-        } else {
-          setShowConfirmPassword(!showConfirmPassword);
-        }
-      };
-    
-      
+  const togglePasswordVisibility = (field: "password" | "confirm") => {
+    if (field === "password") {
+      setShowPassword(!showPassword);
+    } else {
+      setShowConfirmPassword(!showConfirmPassword);
+    }
+  };
 
   const handleRegister = () => {
-    if (!username.trim() || !firstName.trim() || !lastName.trim()|| !email.trim() || !password.trim() || !confirmPassword.trim()) 
-      {
-        window.alert('Required Fields');
+    if (
+      !username.trim() ||
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !confirmPassword.trim()
+    ) {
+      window.alert("Required Fields");
       return;
-      }
-      if (password !== confirmPassword) 
-        {
-           window.alert('Passwords do not match.');
-           return;
-           
+    }
+    if (password !== confirmPassword) {
+      window.alert("Passwords do not match.");
+      return;
     }
 
     const role = "STUDENT";
 
-    fetch('http://127.0.0.1:8081/register/', {
-      method: 'POST',
+    fetch("http://127.0.0.1:8081/register/", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         username: username,
         first_name: firstName,
         last_name: lastName,
         role: role,
         email: email,
         password: password,
-          
       }),
     })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        return response.json().then(data => Promise.reject(data));
-      }
-    })
-    .then(data => {
-      window.alert( `Welcome ${data.first_name}, you are now registered.`);
-      navigation.navigate('Login' as never); 
-      setUsername('');
-      setFirstName('');
-      setLastName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-    })
-    .catch((error) => {
-      Alert.alert('Registration Failed', error.detail || 'There was an issue registering your account.');
-    });
-  }
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return response.json().then((data) => Promise.reject(data));
+        }
+      })
+      .then((data) => {
+        setShowSuccess(true);
+        setFirstName(data.first_name);
+        setTimeout(() => {
+          setShowSuccess(false);
+          setUsername("");
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          navigation.navigate("Login" as never);
+        }, 2000);
+      })
+      .catch((error) => {
+        window.alert(
+          "Registration Failed, There was an issue registering your account."
+        );
+      });
+  };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <ImageBackground source={PlaceholderImage} style={styles.backgroundImage} blurRadius={5}>
+      <ImageBackground
+        source={PlaceholderImage}
+        style={styles.backgroundImage}
+        blurRadius={5}
+      >
         <View style={styles.background}>
           <View style={styles.navbar}>
-            <TouchableOpacity onPress={() => navigation.navigate('index' as never) }>
-                <Image source={require('@/assets/images/swipein_1.png')} style={styles.navbarTitle}
-                />
-                </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("index" as never)}
+            >
+              <Image
+                source={require("@/assets/images/swipein_1.png")}
+                style={styles.navbarTitle}
+              />
+            </TouchableOpacity>
             <TouchableOpacity style={styles.navLinks}>
               {[
-                { label: 'Home', route: 'index' },
-                { label: 'Membership', route: 'membership'},
-                { label: 'Menu', route: 'menu' },
-                { label: 'About', route: 'about' }
+                { label: "Home", route: "index" },
+                { label: "Membership", route: "membership" },
+                { label: "Menu", route: "menu" },
+                { label: "About", route: "about" },
               ].map((navItem, index) => (
                 <TouchableOpacity
                   key={index}
@@ -118,9 +135,7 @@ export default function Register() {
           </View>
 
           <View style={styles.RegistrationContainer}>
-            <Text style={styles.RegisterHeading}>
-              Student Registration 
-            </Text>
+            <Text style={styles.RegisterHeading}>Student Registration</Text>
 
             <View style={styles.inputGroup}>
               <Text style={styles.inputLabel}>First Name</Text>
@@ -148,10 +163,16 @@ export default function Register() {
               <Text style={styles.inputLabel}>M Number</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Enter your M number including M (M12...)"
+                placeholder="M12345678"
                 placeholderTextColor="#999"
                 value={username}
-                onChangeText={setUsername}
+                onChangeText={(text) => {
+                  const cleaned = text.replace(/[^0-9]/g, "");
+
+                  const formatted = `M${cleaned.slice(0, 8)}`;
+                  setUsername(formatted);
+                }}
+                maxLength={9}
                 autoCapitalize="none"
               />
             </View>
@@ -180,12 +201,12 @@ export default function Register() {
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
                 />
-                <TouchableOpacity 
-                  onPress={() => togglePasswordVisibility('password')}
+                <TouchableOpacity
+                  onPress={() => togglePasswordVisibility("password")}
                   style={styles.eyeIcon}
                 >
                   <Ionicons
-                    name={showPassword ? 'eye-off' : 'eye'}
+                    name={showPassword ? "eye-off" : "eye"}
                     size={24}
                     color="#666"
                   />
@@ -204,32 +225,54 @@ export default function Register() {
                   onChangeText={setConfirmPassword}
                   secureTextEntry={!showConfirmPassword}
                 />
-                <TouchableOpacity 
-                  onPress={() => togglePasswordVisibility('confirm')}
+                <TouchableOpacity
+                  onPress={() => togglePasswordVisibility("confirm")}
                   style={styles.eyeIcon}
                 >
                   <Ionicons
-                    name={showConfirmPassword ? 'eye-off' : 'eye'}
+                    name={showConfirmPassword ? "eye-off" : "eye"}
                     size={24}
                     color="#666"
                   />
                 </TouchableOpacity>
-                
               </View>
-
-              
             </View>
-            <TouchableOpacity onPress={handleRegister} style={styles.RegisterButton}>
+            <TouchableOpacity
+              onPress={handleRegister}
+              style={styles.RegisterButton}
+            >
               <Text style={styles.RegisterButtonText}>Create Account</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Login' as never)} style={styles.linkText}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Login" as never)}
+              style={styles.linkText}
+            >
               <Text style={styles.linkText}>Already have an Account ?</Text>
             </TouchableOpacity>
-            
-            <TouchableOpacity onPress={() => navigation.navigate('index' as never) } style={styles.linkText}>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate("index" as never)}
+              style={styles.linkText}
+            >
               <Text style={styles.linkText}>Back to Home</Text>
             </TouchableOpacity>
+
+            <Modal visible={showSuccess} transparent animationType="fade">
+              <View style={styles.modalContainer}>
+                <View style={styles.alertBox}>
+                  <LottieView
+                    source={require("../assets/images/Tick.json")}
+                    autoPlay
+                    loop={false}
+                    style={styles.animation}
+                  />
+                  <Text style={styles.text}>
+                    Welcome {firstName}, you have successfully Registered !!
+                  </Text>
+                </View>
+              </View>
+            </Modal>
           </View>
         </View>
       </ImageBackground>

@@ -103,5 +103,33 @@ export const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 16,
   },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.68)'
+    
+  },
+  alertBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 95,
+    borderRadius: 22,
+    margin: 450,
+    borderColor: 'rgb(218, 15, 15)',
+    borderWidth: 6
+  },
+  animation: {
+    width: 50,
+    height: 50,
+    marginRight: 20,
+  },
+  text: {
+    fontSize: 20,
+    flexShrink: 1,
+  }
+
   
 });

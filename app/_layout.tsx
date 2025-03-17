@@ -1,39 +1,20 @@
 import { Stack } from "expo-router";
+import { AuthProvider } from "./AuthContext";
 
 export default function RootLayout() {
   return (
-    <Stack initialRouteName="index" screenOptions={{headerShown: false}}>
-      
-      <Stack.Screen name="index" options={{
-        headerShown: false
-        
-        }} />
-        <Stack.Screen name="about" options={{
-        headerShown: false,
-        }} />
-        
-        <Stack.Screen name="Login" options={{
-        headerShown: false,
-        }} />
-
-        <Stack.Screen name="membership" options={{
-          headerShown: false,
-        }} />
-
-        <Stack.Screen name="Registration" options={{
-          headerShown: false,
-        }} />
-        
-        <Stack.Screen name="chickfilA" options={{
-          headerShown: false,
-        }} />
-               
-      <Stack.Screen name="+not-found" options={{}} />
-
-      
-    </Stack>
-
-
-
-  )
+    <AuthProvider>
+      <Stack initialRouteName="index" screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="about" />
+        <Stack.Screen name="Login" />
+        <Stack.Screen name="Profiles/chickfilA" />
+        <Stack.Screen name="Profiles/Student" />
+        <Stack.Screen name="Meal/profileSelection" />
+        <Stack.Screen name="membership" />
+        <Stack.Screen name="Registration" />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </AuthProvider>
+  );
 }

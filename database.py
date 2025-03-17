@@ -12,11 +12,10 @@ connection_string = (
 )
 
 
-# URL-encode the connection string
+
 encoded_conn_str = urllib.parse.quote_plus(connection_string)
 
 
-# Construct the final database URL for SQLAlchemy
 database_url = f"mssql+pyodbc:///?odbc_connect={encoded_conn_str}"
 
 
