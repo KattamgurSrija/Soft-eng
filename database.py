@@ -1,26 +1,20 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-import urllib
+from sqlalchemy.orm import sessionmaker
 
+# ------------------ DATABASE CONNECTION ------------------
 
-connection_string = (
-    "DRIVER={ODBC Driver 17 for SQL Server};"
-    "SERVER=RAJAT\\SQLEXPRESS;"
-    "DATABASE=Swipein;"
-    "Trusted_Connection=yes;"   
+DATABASE_URL = (
+    "mssql+pyodbc://localhost\\SQLEXPRESS/SwipeIn"
+    "?driver=ODBC+Driver+17+for+SQL+Server"
+    "&trusted_connection=yes"
 )
 
+# Create SQLAlchemy engine
+engine = create_engine(DATABASE_URL)
 
-
-encoded_conn_str = urllib.parse.quote_plus(connection_string)
-
-
-database_url = f"mssql+pyodbc:///?odbc_connect={encoded_conn_str}"
-
-
-engine = create_engine(database_url)
-
+# Session for database operations
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base =  declarative_base()
+# Base model to inherit from
+Base = declarative_base()
